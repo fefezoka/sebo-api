@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  NOTACTIVE
+}
+
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum ItemStatus {
+  ACTIVE
+  NOTACTIVE
+  AVAILABLE
+  NOTAVAILABLE
+}
+
+model User {
+  id        String     @id @default(uuid()) @map("_id")
+  name      String
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  password  String
+  status    UserStatus @default(ACTIVE)
+  role      Role
+  items     Items[]
+}
+
+model Items {
+  id          String     @id @default(uuid()) @map("_id")
+  title       String
+  author      String
+  price       Float
+  description String
+  status      ItemStatus
+  ddition     DateTime
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  adminId     String?
+}
