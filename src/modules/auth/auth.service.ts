@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UnauthorizedError } from './errors/unauthorized.error';
 import { UserPayload } from './models/UserPayload';
 import { UserToken } from './models/UserToken';
 import { UserFromJwt } from './models/UserFromJwt';
 import { UserEntity } from '../users/entities/user.entity';
-import { UsersRepository } from '../users/users-repository';
+import { UnauthorizedException } from '@nestjs/common';
+import { UsersService } from 'src/modules/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly usersRepository: UsersRepository,
+    private readonly usersService: UsersService,
   ) {}
 
   async login(user: UserFromJwt): Promise<UserToken> {
@@ -22,7 +22,7 @@ export class AuthService {
     };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 
@@ -30,13 +30,13 @@ export class AuthService {
     login: string,
     password: string,
   ): Promise<Omit<UserEntity, 'password'>> {
-    const user = await this.usersRepository.findByEmail(login);
+    const user = await this.usersService.findByEmail(login);
 
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (user.status === 'NOTACTIVE') {
-        throw new UnauthorizedError('Usuário desativado');
+        this.usersService.update({ status: 'ACTIVE' }, user.id);
       }
 
       const { password: noPassword, ...rest } = user;
@@ -48,6 +48,6 @@ export class AuthService {
       }
     }
 
-    throw new UnauthorizedError('Email ou senha incorretos');
+    throw new UnauthorizedException('Email ou senha incorretos');
   }
 }

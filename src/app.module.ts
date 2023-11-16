@@ -6,6 +6,11 @@ import { AuthService } from './modules/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { AdminModule } from './modules/admin/admin.module';
+import { ItemsModule } from './modules/items/items.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
+import { APP_GUARD, Reflector } from '@nestjs/core';
+import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -14,7 +19,18 @@ import { AdminModule } from './modules/admin/admin.module';
     AdminModule,
     PrismaModule,
     ConfigModule.forRoot(),
+    ItemsModule,
+    CategoriesModule,
+    TransactionsModule,
   ],
-  providers: [AuthService, JwtService],
+  providers: [
+    AuthService,
+    JwtService,
+    {
+      provide: APP_GUARD,
+      useFactory: (ref) => new JwtAuthGuard(ref),
+      inject: [Reflector],
+    },
+  ],
 })
 export class AppModule {}

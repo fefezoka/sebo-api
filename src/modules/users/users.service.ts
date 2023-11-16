@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   ConflictException,
   UnauthorizedException,
@@ -7,17 +7,16 @@ import * as bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { UsersRepository } from './users-repository';
 import { UserEntity } from './entities/user.entity';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UpdatePasswordDto } from './dtos/update-password.dto';
 import { DeleteUserDto } from './dtos/delete-user.dto';
 
 @Injectable()
-export class UsersService implements UsersRepository {
+export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<void> {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const emailAlreadyExist = await this.prisma.user.findUnique({
       where: { email: createUserDto.email },
     });
@@ -38,7 +37,7 @@ export class UsersService implements UsersRepository {
       password: await bcrypt.hash(createUserDto.password, 10),
     };
 
-    await this.prisma.user.create({ data });
+    return await this.prisma.user.create({ data });
   }
 
   async findMany(): Promise<UserEntity[]> {
@@ -46,14 +45,26 @@ export class UsersService implements UsersRepository {
   }
 
   async findByEmail(email: string): Promise<UserEntity> {
-    return await this.prisma.user.findUnique({ where: { email } });
+    const user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (user) {
+      return user;
+    }
+
+    throw new NotFoundException();
   }
 
   async findById(id: string): Promise<UserEntity> {
-    return await this.prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findUnique({ where: { id } });
+
+    if (user) {
+      return user;
+    }
+
+    throw new NotFoundException();
   }
 
-  async update(UpdateUserDto: UpdateUserDto, id: string): Promise<void> {
+  async update(UpdateUserDto: UpdateUserDto, id: string): Promise<UserEntity> {
     const data: Prisma.UserUpdateInput = {
       ...UpdateUserDto,
       password: UpdateUserDto.password
@@ -61,11 +72,15 @@ export class UsersService implements UsersRepository {
         : undefined,
     };
 
-    await this.prisma.user.update({ data, where: { id } });
+    return await this.prisma.user.update({ data, where: { id } });
   }
 
   async delete(DeleteUserDto: DeleteUserDto, id: string): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
 
     const validPassword = await bcrypt.compare(
       DeleteUserDto.currentPassword,
@@ -89,6 +104,10 @@ export class UsersService implements UsersRepository {
     id: string,
   ): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
 
     const validPassword = await bcrypt.compare(
       UpdatePasswordDto.currentPassword,

@@ -1,29 +1,34 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from '../users/entities/user.entity';
-import { AdminAuthGuard } from '../auth/guards/admin-auth.guard';
 import { AdminService } from './admin.service';
-import { UsersRepository } from '../users/users-repository';
+import { UsersService } from 'src/modules/users/users.service';
+import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
+import { HasRoles } from 'src/modules/auth/decorators/roles.decorator';
+import { ReportEntity } from 'src/modules/admin/entities/report.entity';
 
 @Controller('admin')
 @ApiTags('admin')
 export class AdminController {
   constructor(
-    private readonly usersRepository: UsersRepository,
+    private readonly usersService: UsersService,
     private readonly adminService: AdminService,
   ) {}
 
   @Get('users')
   @ApiBearerAuth()
-  @UseGuards(AdminAuthGuard)
-  @ApiResponse({ type: UserEntity, isArray: true })
+  @HasRoles('ADMIN')
+  @UseGuards(RolesGuard)
+  @ApiOkResponse({ type: UserEntity, isArray: true })
   findMany() {
-    return this.usersRepository.findMany();
+    return this.usersService.findMany();
   }
 
   @Get('/reports')
   @ApiBearerAuth()
-  @UseGuards(AdminAuthGuard)
+  @HasRoles('ADMIN')
+  @UseGuards(RolesGuard)
+  @ApiOkResponse({ type: ReportEntity })
   reports() {
     return this.adminService.reports();
   }

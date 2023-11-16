@@ -9,9 +9,10 @@ import {
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthRequest } from './models/AuthRequest';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserToken } from './models/UserToken';
 import { LoginRequestBody } from './models/LoginRequestBody';
+import { IsPublic } from 'src/modules/auth/decorators/is-public.decorator';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -19,6 +20,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
+  @IsPublic()
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ type: UserToken })

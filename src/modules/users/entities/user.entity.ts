@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, User } from '@prisma/client';
+import { IsMongoIdObject } from 'src/validator/IsMongoIdObject';
 
 export class UserEntity implements User {
   @ApiProperty()
+  @IsMongoIdObject()
   id: string;
 
   @ApiProperty()

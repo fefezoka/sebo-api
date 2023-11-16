@@ -12,6 +12,11 @@ enum UserStatus {
   NOTACTIVE
 }
 
+enum CategoryStatus {
+  ACTIVE
+  NOTACTIVE
+}
+
 enum Role {
   BUYER
   SELLER
@@ -26,25 +31,51 @@ enum ItemStatus {
 }
 
 model User {
-  id        String     @id @default(uuid()) @map("_id")
-  name      String
-  email     String     @unique
-  createdAt DateTime   @default(now())
-  password  String
-  status    UserStatus @default(ACTIVE)
-  role      Role
-  items     Items[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String        @unique
+  createdAt   DateTime      @default(now())
+  password    String
+  status      UserStatus    @default(ACTIVE)
+  role        Role
+  items       Item[]
+  buyedItems  Transaction[] @relation("buyer")
+  selledItems Transaction[] @relation("seller")
 }
 
-model Items {
-  id          String     @id @default(uuid()) @map("_id")
+model Item {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   author      String
   price       Float
   description String
   status      ItemStatus
-  ddition     DateTime
-  userId      String
-  user        User       @relation(fields: [userId], references: [id])
-  adminId     String?
+  edition     DateTime
+  isbn        String        @unique
+  userId      String        @db.ObjectId
+  category    Category      @relation(fields: [categoryId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+  transaction Transaction[]
+  createdAt   DateTime      @default(now())
+  categoryId  String        @db.ObjectId
+}
+
+model Transaction {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  item      Item     @relation(fields: [itemId], references: [id])
+  itemId    String   @db.ObjectId
+  buyer     User     @relation("buyer", fields: [buyerId], references: [id])
+  seller    User     @relation("seller", fields: [sellerId], references: [id])
+  buyerId   String   @db.ObjectId
+  sellerId  String   @db.ObjectId
+  price     Float
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  name        String         @unique
+  description String?
+  status      CategoryStatus
+  items       Item[]
 }
