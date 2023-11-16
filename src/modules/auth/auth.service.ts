@@ -6,7 +6,7 @@ import { UserToken } from './models/UserToken';
 import { UserFromJwt } from './models/UserFromJwt';
 import { UserEntity } from '../users/entities/user.entity';
 import { UnauthorizedException } from '@nestjs/common';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {

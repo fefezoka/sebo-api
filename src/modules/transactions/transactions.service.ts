@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { TransactionEntity } from 'src/modules/transactions/entities/transaction.entity';
+import { PrismaService } from '../../prisma/prisma.service';
+import { TransactionEntity } from '../transactions/entities/transaction.entity';
 
 @Injectable()
 export class TransactionsService {

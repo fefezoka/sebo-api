@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoIdObject } from 'src/validator/IsMongoIdObject';
+import { IsMongoIdObject } from '../../../validator/IsMongoIdObject';
 
 export class CreateTransactionDto {
   @ApiProperty()

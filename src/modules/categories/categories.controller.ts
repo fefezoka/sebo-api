@@ -17,9 +17,9 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CategoryEntity } from 'src/modules/categories/entities/category.entity';
-import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
-import { HasRoles } from 'src/modules/auth/decorators/roles.decorator';
+import { CategoryEntity } from '../categories/entities/category.entity';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { HasRoles } from '../auth/decorators/roles.decorator';
 
 @Controller('categories')
 @ApiTags('categories')

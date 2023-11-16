@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transaction } from '@prisma/client';
-import { ItemEntity } from 'src/modules/items/entities/item.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { IsMongoIdObject } from 'src/validator/IsMongoIdObject';
+import { ItemEntity } from '../../items/entities/item.entity';
+import { UserEntity } from '../../users/entities/user.entity';
+import { IsMongoIdObject } from '../../../validator/IsMongoIdObject';
 
 export class TransactionEntity implements Transaction {
   @ApiProperty()

@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CategoryEntity } from 'src/modules/categories/entities/category.entity';
-import { ItemEntity } from 'src/modules/items/entities/item.entity';
-import { TransactionEntity } from 'src/modules/transactions/entities/transaction.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { CategoryEntity } from '../../categories/entities/category.entity';
+import { ItemEntity } from '../../items/entities/item.entity';
+import { TransactionEntity } from '../../transactions/entities/transaction.entity';
+import { UserEntity } from '../../users/entities/user.entity';
 
 class ActiveUsers {
   @ApiProperty()

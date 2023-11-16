@@ -19,10 +19,10 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { ItemsService } from 'src/modules/items/items.service';
-import { TransactionEntity } from 'src/modules/transactions/entities/transaction.entity';
-import { UsersService } from 'src/modules/users/users.service';
-import { TransactionsByUserDto } from 'src/modules/transactions/dto/transactions-by-user.dto';
+import { ItemsService } from '../items/items.service';
+import { TransactionEntity } from '../transactions/entities/transaction.entity';
+import { UsersService } from '../users/users.service';
+import { TransactionsByUserDto } from '../transactions/dto/transactions-by-user.dto';
 
 @Controller('transactions')
 @ApiTags('transactions')

@@ -24,13 +24,13 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
-import { UserFromJwt } from 'src/modules/auth/models/UserFromJwt';
-import { ItemEntity } from 'src/modules/items/entities/item.entity';
-import { SearchItemDto } from 'src/modules/items/dto/search-item.dto';
-import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
-import { HasRoles } from 'src/modules/auth/decorators/roles.decorator';
-import { CategoriesService } from 'src/modules/categories/categories.service';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { UserFromJwt } from '../auth/models/UserFromJwt';
+import { ItemEntity } from '../items/entities/item.entity';
+import { SearchItemDto } from '../items/dto/search-item.dto';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { HasRoles } from '../auth/decorators/roles.decorator';
+import { CategoriesService } from '../categories/categories.service';
 
 @Controller('items')
 @ApiTags('items')

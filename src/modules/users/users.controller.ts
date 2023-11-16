@@ -21,8 +21,8 @@ import { DeleteUserDto } from './dtos/delete-user.dto';
 import { UsersService } from './users.service';
 import { UserFromJwt } from '../auth/models/UserFromJwt';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { IsPublic } from 'src/modules/auth/decorators/is-public.decorator';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Controller('users')
 @ApiTags('users')

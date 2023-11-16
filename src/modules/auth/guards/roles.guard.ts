@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
-import { AuthRequest } from 'src/modules/auth/models/AuthRequest';
+import { AuthRequest } from '../../auth/models/AuthRequest';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

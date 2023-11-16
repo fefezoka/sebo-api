@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserFromJwt } from 'src/modules/auth/models/UserFromJwt';
-import { SearchItemDto } from 'src/modules/items/dto/search-item.dto';
-import { ItemEntity } from 'src/modules/items/entities/item.entity';
+import { PrismaService } from '../../prisma/prisma.service';
+import { UserFromJwt } from '../auth/models/UserFromJwt';
+import { SearchItemDto } from '../items/dto/search-item.dto';
+import { ItemEntity } from '../items/entities/item.entity';
 
 @Injectable()
 export class ItemsService {

@@ -2,10 +2,10 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from '../users/entities/user.entity';
 import { AdminService } from './admin.service';
-import { UsersService } from 'src/modules/users/users.service';
-import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
-import { HasRoles } from 'src/modules/auth/decorators/roles.decorator';
-import { ReportEntity } from 'src/modules/admin/entities/report.entity';
+import { UsersService } from '../users/users.service';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { HasRoles } from '../auth/decorators/roles.decorator';
+import { ReportEntity } from '../admin/entities/report.entity';
 
 @Controller('admin')
 @ApiTags('admin')

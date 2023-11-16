@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Item } from '@prisma/client';
-import { CategoryEntity } from 'src/modules/categories/entities/category.entity';
-import { IsMongoIdObject } from 'src/validator/IsMongoIdObject';
+import { CategoryEntity } from '../../categories/entities/category.entity';
+import { IsMongoIdObject } from '../../../validator/IsMongoIdObject';
 
 export class ItemEntity implements Item {
   @ApiProperty()
