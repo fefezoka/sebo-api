@@ -7,7 +7,7 @@ export class CategoryEntity implements Category {
   @IsMongoIdObject()
   id: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String })
   description: string | null;
 
   @ApiProperty()
